@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+def setVersionName = { ->
+    if (project.hasProperty("androidVersionName")) {
+        println("Replacing versionName with supplied build parameter: " +
+                "$androidVersionName")
+        return androidVersionName
+    } else {
+        return "1.0"
+    }
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.google.ar.core.examples.java.cloudanchor"
+
+        // 24 is the minimum since ARCore only works with 24 and higher.
+        minSdkVersion 24
+        targetSdkVersion 28
+        versionCode 1
+        versionName setVersionName()
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    // ARCore library
+    implementation 'com.google.ar:core:1.15.0'
+
+    // Obj - a simple Wavefront OBJ file loader
+    // https://github.com/javagl/Obj
+    implementation 'de.javagl:obj:0.2.1'
+
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    implementation 'com.google.firebase:firebase-database:16.0.5'
+    // Override conflicting Firebase support-media-compat:26.1.0 dependency.
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.google.guava:guava:27.0.1-android'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-database:18.0.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
